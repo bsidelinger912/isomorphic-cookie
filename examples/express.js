@@ -12,18 +12,15 @@ app.use(express.static('dist'));
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-  const unplug = isomorphicCookie.plugToRequest(req, res);
   callIndex++;
 
-  console.log(`client cookie: ${isomorphicCookie.load('clientCookie')}`);
-  console.log(`server cookie: ${isomorphicCookie.load('serverCookie')}`);
+  console.log(`client cookie: ${isomorphicCookie.load('clientCookie', req)}`);
+  console.log(`server cookie: ${isomorphicCookie.load('serverCookie', req)}`);
 
-  isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`);
-  isomorphicCookie.remove('serverCookie');
+  isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`, {}, res);
+  // isomorphicCookie.remove('serverCookie');
 
   res.sendFile(path.join(__dirname, 'index.html'));
-
-  unplug();
 });
 
 app.listen(8000);

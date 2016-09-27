@@ -7,6 +7,8 @@ const _serialize = cookie.serialize;
 const encoding = require('../src/encoding');
 const save = require('../src/save').default;
 
+const _encode = encoding.encode;
+
 describe('save()', () => {
   beforeEach(() => {
     // mock decode and cookie

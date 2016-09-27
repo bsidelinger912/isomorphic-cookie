@@ -2,68 +2,108 @@
 Load, save and remove cookies within your isomorphic application
 
 ## Isomorphic cookies!
-If using on Node.js with express or hapi, you can hook into the request and reply using `var unplug = isomorphicCookie.plugToRequest(req, res);`
+The initial idea for this package came from the popular react-cookie package, but we've made it a little harder to make serious mistakes using plugToRequest() with async server operations.  Instead of providing that function that allows you to only have one active request at a time, we've allowed for passing the request to the load() function and the response to the save() and remove() functions.  This way it's easier to reason about exactly which request/response you're interacting with.
 
-*(require the cookieParser middleware for express)*
-
-To ensure long running async operations do not attempt to alter cookies after the request has been sent, call the `unplug` function that is returned in a finally block in your router.
-
-If you are within a non-browser or Node.js environment, you can use `isomorphicCookie.setRawCookie(req.headers.cookie)`
-
-This currently supports Express and Hapi. If you need to support another framework, feel free to send a PR.
+This currently supports Express and Hapi servers. If you need to support another server framework, feel free to send a PR or make a feature request in [issues](https://github.com/bsidelinger912/isomorphic-cookie/issues).
 
 ## Download
-`npm install isomorphic-cookie`<br />
+`npm install @discodigital/isomorphic-cookie`
+
 
 # Examples
 
+### On the client:
 ```js
-import { Component } from 'react';
-import cookie from 'isomorphic-cookie';
+const isomorphicCookie = require('isomorphic-cookie');
 
-export default class MyApp extends Component {
-  constructor(props) {
-    super(props);
+console.log(isomorphicCookie.load('serverCookie'));
+console.log(isomorphicCookie.load('clientCookie'));
 
-    this.state =  { userId: cookie.load('userId') };
-  }
+isomorphicCookie.save('clientCookie', 'clientCookie value here');
 
-  onLogin(userId) {
-    this.setState({ userId });
-    cookie.save('userId', userId, { path: '/' });
-  }
-
-  onLogout() {
-    cookie.remove('userId', { path: '/' });
-
-    /** Clear all cookies starting with 'session' (to get all cookies, omit regex argument) */
-    Object.keys(cookie.select(/^session.*/i)).forEach(name => cookie.remove(name, { path: '/' }))
-  }
-
-  render() {
-    return (
-      <LoginPanel onSuccess={this.onLogin.bind(this)} />
-    );
-  }
-}
 ```
 
-## Without CommonJS
-You can use isomorphic-cookie with anything by using the global variable `isomorphicCookie`.
+### On the server (Hapi):
+```js
+'use strict';
 
-*Note that `window` needs to exist to use `isomorphicCookie`.*
+const Hapi = require('hapi');
+const path = require('path');
+const isomorphicCookie = require('isomorphic-cookie');
+
+// Create a server with a host and port
+const server = new Hapi.Server();
+server.connection({
+  host: 'localhost',
+  port: 8000,
+});
+
+let callIndex = 0;
+
+server.register(require('inert'), (err) => {
+  if (err) {
+    throw err;
+  }
+
+  server.route({
+    method: 'GET',
+    path:'/',
+    handler: (request, reply) => {
+      callIndex++;
+
+      console.log(`client cookie: ${isomorphicCookie.load('clientCookie', request)}`);
+      console.log(`server cookie: ${isomorphicCookie.load('serverCookie', request)}`);
+
+      isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`, {}, reply);
+
+      reply.file(path.join(__dirname, 'index.html'));
+    },
+  });
+
+  server.start((err) => {
+    if (err) {
+      throw err;
+    }
+    console.log('Server running at:', server.info.uri);
+  });
+});
+
+```
+
+### On the server (Express):
+```js
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+
+const isomorphicCookie = require('isomorphic-cookie');
+
+const app = express();
+
+app.use(express.static('dist'));
+app.use(cookieParser());
+
+app.get('/', (req, res) => {
+  console.log(`client cookie: ${isomorphicCookie.load('clientCookie', req)}`);
+  console.log(`server cookie: ${isomorphicCookie.load('serverCookie', req)}`);
+
+  isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`, {}, res);
+
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(8000);
+
+```
+
 
 ## Usage
 
-### `isomorphicCookie.load(name, [doNotParse])`
-### `isomorphicCookie.select([regex])`
-### `isomorphicCookie.save(name, val, [opt])`
-### `isomorphicCookie.remove(name, [opt])`
-### `isomorphicCookie.plugToRequest(req, res): unplug()`
-### `isomorphicCookie.setRawCookie(cookies)`
+### `isomorphicCookie.load(name, [request], [doNotParse])`
+### `isomorphicCookie.save(name, val, [opt], [response])`
+### `isomorphicCookie.remove(name, [opt], [response])`
 
 ## opt
-Support all the cookie options from the [RFC 6265](https://tools.ietf.org/html/rfc6265#section-4.1.2.1).
 
 ### path
 > cookie path
@@ -71,17 +111,9 @@ Support all the cookie options from the [RFC 6265](https://tools.ietf.org/html/r
 ### expires
 > absolute expiration date for the cookie (Date object)
 
-### maxAge
-> relative max age of the cookie from when the client receives it (seconds)
-
 ### domain
 > domain for the cookie
 
-### secure
-> true or false
-
-### httpOnly
-> true or false
 
 ## License
 This project is under the MIT license. You are free to do whatever you want with it.

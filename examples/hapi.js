@@ -35,16 +35,14 @@ server.register(require('inert'), (err) => {
     method: 'GET',
     path:'/',
     handler: (request, reply) => {
-      const unplug = isomorphicCookie.plugToRequest(request, reply);
       callIndex++;
 
-      isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`);
-      console.log(`client cookie: ${isomorphicCookie.load('clientCookie')}`);
-      console.log(`server cookie: ${isomorphicCookie.load('serverCookie')}`);
+      console.log(`client cookie: ${isomorphicCookie.load('clientCookie', request)}`);
+      console.log(`server cookie: ${isomorphicCookie.load('serverCookie', request)}`);
+
+      isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`, {}, reply);
 
       reply.file(path.join(__dirname, 'index.html'));
-
-      unplug();
     },
   });
 
