@@ -29,7 +29,6 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test-old": "node_modules/.bin/minijasminenode2 test.js",
     "test": "./node_modules/mocha/bin/mocha test/**/*spec.js --compilers js:babel-core/register --reporter spec",
     "dev-server": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --config examples/webpack.config.js --inline --content-base dist",
     "hapi": "node examples/hapi.js",

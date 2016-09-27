@@ -44,7 +44,7 @@ export function decode(value, doNotParse) {
   // check if it's JSON
   if (!doNotParse) {
     try {
-      returnValue = JSON.parse(value);
+      returnValue = JSON.parse(returnValue);
     } catch (e) {
       // leave it be, it's a string
     }

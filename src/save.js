@@ -15,15 +15,15 @@ const whiteListOpts = [
   'path',
 ];
 
-const defaultBrowserOpts = {
+export const defaultBrowserOpts = {
   path: '/',
 };
 
-const defaultExpressOpts = {
+export const defaultExpressOpts = {
   path: '/',
 };
 
-const defaultHapiOpts = {
+export const defaultHapiOpts = {
   path: '/',
   isHttpOnly: false,
   isSecure: false,

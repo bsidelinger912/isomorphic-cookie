@@ -36,6 +36,8 @@ describe('load()', () => {
     expect(encoding.decode)
       .toHaveBeenCalled()
       .toHaveBeenCalledWith('result', undefined);
+
+    global.document = undefined;
   });
 
   it('should check headers on the server', () => {

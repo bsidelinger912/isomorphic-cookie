@@ -5,11 +5,11 @@ const cookie = require('cookie');
 const _serialize = cookie.serialize;
 
 const encoding = require('../src/encoding');
-const save = require('../src/save');
+const remove = require('../src/remove').default;
 
 const _encode = encoding.encode;
 
-describe('save()', () => {
+describe('remove()', () => {
   beforeEach(() => {
     // mock decode and cookie
     encoding.encode = expect.createSpy().andCall((string) => string);
@@ -21,44 +21,41 @@ describe('save()', () => {
     cookie.serialize = _serialize;
   });
 
-  it('should save to cookies in browser', () => {
+  it('should remove from cookies on the client', () => {
     // mock the browser
     global.document = {
       cookie: '',
     };
 
-    save.default('testName', 'testVal');
+    remove('testName');
 
     expect(cookie.serialize)
       .toHaveBeenCalled()
-      .toHaveBeenCalledWith('testName', 'testVal', save.defaultBrowserOpts);
-
-    expect(encoding.encode)
-      .toHaveBeenCalled()
-      .toHaveBeenCalledWith('testVal');
+      .toHaveBeenCalledWith('testName', '', { expires: new Date(1970, 1, 1, 0, 0, 1) });
 
     global.document = undefined;
   });
 
-  it('should add to response header on server', () => {
+  it('should remove with headers on server', () => {
     const resExpress = {
-      cookie: expect.createSpy(),
+      clearCookie: expect.createSpy(),
     };
 
-    save.default('testName', 'testVal', {}, resExpress);
+    remove('testName', {}, resExpress);
 
-    expect(resExpress.cookie)
+    expect(resExpress.clearCookie)
       .toHaveBeenCalled()
-      .toHaveBeenCalledWith('testName', 'testVal', save.defaultExpressOpts);
+      .toHaveBeenCalledWith('testName', {});
 
     const resHapi = {
-      state: expect.createSpy(),
+      unstate: expect.createSpy(),
     };
 
-    save.default('testName', 'testVal', {}, resHapi);
+    remove('testName', {}, resHapi);
 
-    expect(resHapi.state)
+    expect(resHapi.unstate)
       .toHaveBeenCalled()
-      .toHaveBeenCalledWith('testName', 'testVal', save.defaultHapiOpts);
+      .toHaveBeenCalledWith('testName');
+
   });
 });

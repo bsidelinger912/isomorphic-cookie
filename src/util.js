@@ -5,13 +5,13 @@
 
 export function isResWritable(res) {
   if (!res) {
-    return false
+    return false;
   }
 
   // TODO: check if this is the same in Hapi
   if (res.headersSent === true) {
-    return false
+    return false;
   }
 
-  return true
+  return true;
 }
