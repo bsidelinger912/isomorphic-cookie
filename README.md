@@ -2,7 +2,7 @@
 Load, save and remove cookies within your isomorphic application
 
 ## Isomorphic cookies!
-The initial idea for this package came from the popular react-cookie package, but we've made it a little harder to make serious mistakes using plugToRequest() with async server operations.  Instead of providing that function that allows you to only have one active request at a time, we've allowed for passing the request to the load() function and the response to the save() and remove() functions.  This way it's easier to reason about exactly which request/response you're interacting with.
+The initial idea for this package came from the popular react-cookie package, but we've made it a little harder to make serious mistakes using plugToRequest() with async server operations.  Instead of providing that function, that allows you to only read/write to one request at a time (the current plugged request), we've allowed for passing the request to the load() function and the response to the save() and remove() functions.  This way it's easier to reason about exactly which request/response you're interacting with.
 
 This currently supports Express and Hapi servers. If you need to support another server framework, feel free to send a PR or make a feature request in [issues](https://github.com/bsidelinger912/isomorphic-cookie/issues).
 
