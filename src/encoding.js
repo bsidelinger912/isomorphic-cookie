@@ -36,9 +36,9 @@ export function decode(value, doNotParse) {
   let returnValue = value;
 
   // if they passed a base64 value, we didn't encode and won't mess
-  if (!isBase64(returnValue)) {
+  if (returnValue && !isBase64(returnValue)) {
     // if it wasn't base64, we uri encoded when setting, so decode
-    returnValue = decodeURIComponent(value);
+    returnValue = decodeURIComponent(returnValue);
   }
 
   // check if it's JSON

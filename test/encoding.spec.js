@@ -21,6 +21,12 @@ describe('encoding.encode()', () => {
 });
 
 describe('encoding.decode()', () => {
+  it('should not convert undefined to a string', () => {
+    const decoded = encoding.decode(undefined);
+
+    expect(decoded).toEqual(undefined);
+  });
+
   it('should leave base64 strings alone', () => {
     const decoded = encoding.decode('dGVzdGlu');
     expect(decoded).toEqual('dGVzdGlu');
