@@ -28,7 +28,6 @@ export const defaultExpressOpts = {
 
 export const defaultHapiOpts = {
   path: '/',
-  isHttpOnly: false,
   isSecure: true,
 };
 
