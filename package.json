@@ -1,6 +1,6 @@
 {
   "name": "@discodigital/isomorphic-cookie",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Load and save cookies on the client and server",
   "main": "dist/index.js",
   "files": [
