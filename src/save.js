@@ -13,20 +13,23 @@ const whiteListOpts = [
   'domain',
   'expires',
   'path',
+  // 'secure' ??? would need a mapping for Hapi...
 ];
 
 export const defaultBrowserOpts = {
   path: '/',
+  secure: true,
 };
 
 export const defaultExpressOpts = {
   path: '/',
+  secure: true,
 };
 
 export const defaultHapiOpts = {
   path: '/',
   isHttpOnly: false,
-  isSecure: false,
+  isSecure: true,
 };
 
 export default (name, val, opt = {}, res) => {
