@@ -13,7 +13,7 @@ const whiteListOpts = [
   'domain',
   'expires',
   'path',
-  // 'secure' ??? would need a mapping for Hapi...
+  'secure',
 ];
 
 export const defaultBrowserOpts = {
@@ -46,6 +46,9 @@ export default (name, val, opt = {}, res) => {
 
   // hapi
   if (isResWritable(res) && res.state) {
+    if ('undefined' !== options.secure) {
+      options.isSecure = options.secure;
+    }
     res.state(name, encode(val), Object.assign({}, defaultHapiOpts, options));
   }
 };
