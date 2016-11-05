@@ -100,10 +100,10 @@ app.listen(8000);
 ## Usage
 
 ### `isomorphicCookie.load(name, [request], [doNotParse])`
-### `isomorphicCookie.save(name, val, [opt], [response])`
-### `isomorphicCookie.remove(name, [opt], [response])`
+### `isomorphicCookie.save(name, val, [options], [response])`
+### `isomorphicCookie.remove(name, [options], [response])`
 
-## opt
+## options (object)
 
 ### path
 > cookie path
@@ -113,6 +113,9 @@ app.listen(8000);
 
 ### domain
 > domain for the cookie
+
+### secure
+> defaults to true
 
 
 ## License
