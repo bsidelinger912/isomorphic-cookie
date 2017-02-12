@@ -14,6 +14,7 @@ const whiteListOpts = [
   'expires',
   'path',
   'secure',
+  'httpOnly',
 ];
 
 export const defaultBrowserOpts = {
