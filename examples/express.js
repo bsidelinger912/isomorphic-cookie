@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
   console.log(`client cookie: ${isomorphicCookie.load('clientCookie', req)}`);
   console.log(`server cookie: ${isomorphicCookie.load('serverCookie', req)}`);
 
-  isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`, {}, res);
+  isomorphicCookie.save('serverCookie', `serverCookie, call #: ${callIndex}`, { secure: false }, res);
   // isomorphicCookie.remove('serverCookie');
 
   res.sendFile(path.join(__dirname, 'index.html'));
