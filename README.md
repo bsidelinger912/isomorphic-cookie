@@ -117,6 +117,8 @@ app.listen(8000);
 ### secure
 > defaults to true
 
+### httpOnly
+
 
 ## License
 This project is under the MIT license. You are free to do whatever you want with it.
