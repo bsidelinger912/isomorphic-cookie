@@ -47,7 +47,7 @@ export default (name, val, opt = {}, res) => {
 
   // hapi
   if (isResWritable(res) && res.state) {
-    if ('undefined' !== options.secure) {
+    if ('undefined' !== typeof options.secure) {
       options.isSecure = options.secure;
     }
     res.state(name, encode(val), Object.assign({}, defaultHapiOpts, options));
