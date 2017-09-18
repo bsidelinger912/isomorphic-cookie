@@ -10,9 +10,11 @@ This currently supports Express and Hapi servers. If you need to support another
 
 ## Usage
 
-### `isomorphicCookie.load(name, [request], [doNotParse])`
-### `isomorphicCookie.save(name, val, [options], [response])`
-### `isomorphicCookie.remove(name, [options], [response])`
+`isomorphicCookie.load(name, [request], [doNotParse])`
+
+`isomorphicCookie.save(name, val, [options], [response])`
+
+`isomorphicCookie.remove(name, [options], [response])`
 
 ## options (object)
 
@@ -26,10 +28,15 @@ This currently supports Express and Hapi servers. If you need to support another
 > domain for the cookie
 
 ### secure
-> defaults to true
+> only allow on https connections, defaults to true, you must set to false to use over http
 
 ### httpOnly
 
+
+** NOTE:
+You must set `{ secure: false }` to use this over http.  So if you're just trying it out and testing locally,
+make sure to set that option.  If you do local development then deploy to an https server, make it conditional
+based on environment.
 
 
 # Examples
