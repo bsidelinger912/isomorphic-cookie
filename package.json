@@ -1,6 +1,6 @@
 {
   "name": "isomorphic-cookie",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Load and save cookies on the client and server",
   "main": "dist/index.js",
   "files": [
