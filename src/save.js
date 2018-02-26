@@ -4,7 +4,7 @@
  */
 
 const cookie = require('cookie');
-const _pick = require('lodash/pick');
+const _pick = require('lodash.pick');
 
 import { encode } from './encoding';
 import { isResWritable } from './util';
